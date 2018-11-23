@@ -1,0 +1,21 @@
+{
+    "init": [
+        {
+            "path": "/",
+            "view": "index",
+            "data": {
+                "name": "Gaurav b",
+                "age": 28
+            }
+        },
+        {
+            "path": "/user",
+            "view": "user",
+            "data": {
+                "name": "Gaurav Bhardwaj",
+                "age": 18,
+                "avatar": "http://awallpapershub.com/wp-content/uploads/2018/06/thumb-1920-825772-768x512.jpg"
+            }
+        }
+    ]
+}

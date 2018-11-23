@@ -1,0 +1,23 @@
+.card {
+     border: 1px solid rgba(0,0,0, .09);
+}
+
+.anm-check{
+  width:200px;
+  border-radius:4px;
+  margin: 0 auto;
+}
+
+.anm-check-done {
+  margin-left:-10px;
+  width: 210px;
+  height: 160px;
+  background:url(https://cdn.pbrd.co/images/hns4qtE7D.png) no-repeat;
+  background-position: 0 0;
+}
+
+.anm-check-done-done {
+     background-position: -7980px 0;
+    transition: background .9s steps(38);
+    cursor:pointer;
+}
