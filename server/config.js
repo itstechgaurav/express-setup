@@ -13,7 +13,6 @@ const CN = require("./../controllers/controller");
 const MD = require("./../middlewares/middleware");
 let hbs = require("express-handlebars");
 
-app.use(express.static('public'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.engine('hbs', hbs({
@@ -35,8 +34,9 @@ app.use(session({
 }));
 
 app.use(flash());
-
 app.use("/*", MD("methods"));
+RT.get("/index.php", "auth@init");
+app.use(express.static('public'));
 
 module.exports = {
     RT,
