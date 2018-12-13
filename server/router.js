@@ -1,5 +1,5 @@
-const CN = require("./controllers/controller");
-const MD = require("./middlewares/middleware");
+const CN = require("./../controllers/controller");
+const MD = require("./../middlewares/middleware");
 
 class Router {
      constructor(app) {

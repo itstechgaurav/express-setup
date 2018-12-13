@@ -1,16 +1,12 @@
-// Starting PUBG Mobile :) Enjoy
+function abc(callback) {
+     setTimeout(function() {
+          callback({
+               name: "Gaurav"
+          });
+     },3000);
+}
 
-let crpt = require("bcryptjs");
 
-let pass = "fsdjkfh"
-let h = "$2a$10$3lDqRY28CaHCKhC7TTlG9.8fN0nsAN79fkS0YzPilAZrjLrT11LQ.";
-
-crpt.genSalt(10, (e,s) => {
-     crpt.hash(pass, s, (e, h) => {
-          console.log(h);
-     });
-});
-
-crpt.compare(pass, h, (e, r) => {
-     console.log(r);
+abc(function(data) {
+     console.log(data);
 });

@@ -1,0 +1,33 @@
+
+     <nav class="nav nav-corner nav-hide-sm p-1-sm">
+          <div class="nav-logo m-0 ml-2">
+               <a href="/" class="nav-text" style="text-decoration: none;">
+                    SPYDER
+               </a>
+          </div>
+          <div class="nav-opener">
+               <div class="hamburger">
+
+               </div>
+          </div>
+          <div class="nav-body c-nav-body p-1">
+               <div class="nav-item">
+                    <a href="/" class="link link-prime"><i class="ion ion-home"> </i>&nbsp; Home</a>
+               </div>
+               {{#if admin}}
+                    <div class="nav-item">
+                         <a href="/profile" class="link link-prime"><i class="ion ion-person"> </i>&nbsp; Profile</a>
+                    </div>
+                    <div class="nav-item">
+                         <a href="/logout" class="link link-prime"><i class="ion ion-ios-circle-outline"> </i>&nbsp; Logout</a>
+                    </div>
+               {{else}}
+                    <div class="nav-item">
+                         <a href="/login" class="link link-prime"><i class="ion ion-bowtie"></i>&nbsp; Login</a>
+                    </div>
+                    <div class="nav-item">
+                         <a href="/signup" class="link link-prime"><i class="ion ion-flash"></i>&nbsp; Signup</a>
+                    </div>
+               {{/if}}
+          </div>
+     </nav>

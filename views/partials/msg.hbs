@@ -1,0 +1,60 @@
+<style media="screen">
+     .alert-container {
+          position: fixed;
+          z-index: 2500;
+          bottom: 0;
+          left: 10px;
+          width: 300px;
+     }
+</style>
+{{#each flash.prime}}
+<div class="alert alert-prime">
+    {{>msgi}}
+</div>
+{{/each}}
+
+{{#each flash.sec}}
+<div class="alert alert-sec">
+    {{>msgi}}
+</div>
+{{/each}}
+
+{{#each flash.ter}}
+<div class="alert alert-ter">
+    {{>msgi}}
+</div>
+{{/each}}
+
+{{#each flash.danger}}
+<div class="alert alert-danger">
+    {{>msgi}}
+</div>
+{{/each}}
+
+
+{{#each flash.dark}}
+<div class="alert alert-dark">
+    {{>msgi}}
+</div>
+{{/each}}
+
+
+{{#each flash.warn}}
+<div class="alert alert-warn">
+    {{>msgi}}
+</div>
+{{/each}}
+
+
+{{#each flash.black}}
+<div class="alert alert-black">
+    {{>msgi}}
+</div>
+{{/each}}
+
+
+{{#each flash.white}}
+<div class="alert alert-white">
+    {{>msgi}}
+</div>
+{{/each}}

@@ -8,7 +8,6 @@ mongoose.connect(process.env.DB_HOST, {
     }
 });
 
-
 mongoose.connection.on("error", () => {
     console.log("!!!Connected");
 })

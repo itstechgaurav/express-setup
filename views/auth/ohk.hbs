@@ -1,0 +1,62 @@
+<style>
+     .a-style-none {
+          text-decoration: none;
+          color: inherit;
+     }
+
+     .text-mute-hover {
+          transition: .3s;
+     }
+
+     .text-mute-hover:not(:hover) .card {
+          box-shadow: none !important;
+     }
+
+     .text-mute-hover:hover {
+          opacity: 1;
+     }
+</style>
+
+<div class="mb-3 text-center">
+   <h3 class="heading-center text-cap">
+        Take Me to
+   </h3>
+   <div class="row space-e mt-4">
+        <div class="col-4 col-5-md col-6-sm col-7-xs text-mute text-mute-hover">
+             <a href="/" class="a-style-none">
+                  <div class="card shadow-warn">
+                       <div class="card-body">
+                            <div class="">
+                                 <i class="ion ion-home ts-3"></i>
+                            </div>
+                            <h3 class="heading-ter text-cap ts-1-7 mt-1">
+                                 Home
+                            </h3>
+                       </div>
+                  </div>
+             </a>
+        </div>
+        {{#if admin}}
+             <div class="col-4 col-5-md col-6-sm col-7-xs text-mute text-mute-hover">
+                  <a href="/profile" class="a-style-none">
+                       <div class="card shadow-warn">
+                            <div class="card-body">
+                                 <div class="">
+                                      <i class="ion ion-bowtie ts-3"></i>
+                                 </div>
+                                 <h3 class="heading-ter text-cap ts-1-7 mt-1">
+                                      Profile
+                                 </h3>
+                            </div>
+                       </div>
+                  </a>
+             </div>
+        {{/if}}
+   </div>
+</div>
+
+<script type="text/javascript">
+     setTimeout(function() {
+          document.getElementById("anmm-bla").classList.add("anm-check-done-done");
+     }, 100);
+</script>

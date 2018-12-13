@@ -8,7 +8,7 @@ var schema = new mongoose.Schema({
   name: {
        type: String,
        required: false,
-       default: ""
+       default: "No Name"
  },
   email: {
     type: String,
@@ -21,6 +21,10 @@ var schema = new mongoose.Schema({
       message: `{VALUE} is !!!Email`
     }
   },
+  verified: {
+     type: Boolean,
+     default: false
+ },
   password: {
     type: String,
     require: true,
@@ -69,6 +73,7 @@ schema.statics.findByToken = function(token) {
 
      return User.findOne({
           _id: decoded._id,
+          verified: true,
           'tokens.token': token,
           'tokens.access': 'auth'
      });
@@ -77,7 +82,7 @@ schema.statics.findByToken = function(token) {
 schema.statics.findByCredentials = function(email,password) {
      let user = this;
 
-     return User.findOne({email}).then(user => {
+     return User.findOne({email, verified: true}).then(user => {
           if(!user) {
                return Promise.reject();
           }
@@ -108,6 +113,7 @@ schema.methods.generateAuthToken = function() {
           access,
           token
      });
+     user.verified = true;
      return user.save().then(() => {
           return token;
      });

@@ -8,33 +8,19 @@
           <link rel="stylesheet" href="/css/this.css">
      </head>
      <body class="">
-          <nav class="nav nav-corner nav-hide-sm p-1-sm">
-               <div class="nav-logo m-0 ml-2">
-                    <div class="nav-text">
-                         SPYDER
-                    </div>
-               </div>
-               <div class="nav-opener">
-                    <div class="hamburger">
-
-                    </div>
-               </div>
-               <div class="nav-body text-white bg-dark p-1">
-                    <div class="nav-item">
-                         <a href="/" class="link link-prime">Home</a>
-                    </div>
-                    <div class="nav-item">
-                         <a href="/login" class="link link-prime">Login</a>
-                    </div>
-                    <div class="nav-item">
-                         <a href="/signup" class="link link-prime">Signup</a>
-                    </div>
-                    <div class="nav-item">
-                         <a href="/logout" class="link link-prime">Logout</a>
-                    </div>
-               </div>
-          </nav>
-          {{{body}}}
+          <div class="alert-container">
+             {{>msg}}
+         </div>
+          {{>nav}}
+         <div class="row space-a mt-10">
+             <div class="col-6 col-8-md col-10-sm col-12-xs">
+                 <div class="card">
+                     <div class="card-body mt-2">
+                          {{{body}}}
+                     </div>
+                 </div>
+             </div>
+         </div>
           <script src="http://spyder.epicofjs.com/main.js"></script>
           <script src="/js/this.js"></script>
      </body>
