@@ -1,9 +1,10 @@
-let {User} = require("./../../models/user");
+let {User} = MODEL("user");
 
 class authMiddleware {
     do(req, res, next) {
          if(req.session && req.session.token === false) {
-             res.status(401).res.redirect("/");
+             req.flash("danger", "Error ! Unauthrized");
+             res.redirect("/");
          }
          User.findByToken(req.session.token).then(user => {
             if(!user) {

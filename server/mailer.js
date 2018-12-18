@@ -36,9 +36,6 @@ let mailOptions = {
 };
 
 // send mail with defined transport object
-
-
-
 class MAIL {
      send(ops = mailOptions, callback) {
           transporter.sendMail(ops, (error, info) => {
@@ -50,8 +47,8 @@ class MAIL {
             });
      }
 
-     view(ops, name, data, callback) {
-          var source = fs.readFileSync(path.join(__dirname,"../MailTemplates/", name + ".hbs"), 'utf8');
+     template(ops, name, data, callback) {
+          var source = fs.readFileSync(path.join(appRoot,"/views/Mail/", name + ".hbs"), 'utf8');
           var template = hbs.compile(source);
           ops.html = template(data);
           transporter.sendMail(ops, (error, info) => {

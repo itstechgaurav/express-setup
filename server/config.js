@@ -1,16 +1,14 @@
 require("dotenv").config();
 const express = require("express");
+const app = express();
+require('./globals')(app);
 var flash = require('connect-flash');
 const bodyParser = require('body-parser');
 const session = require('express-session');
-const mongoose = require('./../db/db');
+const mongoose = RQ('/db/db');
 const MongoStore = require('connect-mongo')(session);
 const STORE = process.env.NODE_ENV === 'dev' ? new session.MemoryStore() : new MongoStore({ mongooseConnection: mongoose.connection });
-const app = express();
 const {PORT = 3000} = process.env;
-const RT = require('./router')(app);
-const CN = require("./../controllers/controller");
-const MD = require("./../middlewares/middleware");
 let hbs = require("express-handlebars");
 
 app.use(bodyParser.json());
@@ -35,7 +33,7 @@ app.use(session({
 
 app.use(flash());
 app.use("/*", MD("methods"));
-RT.get("/index.php", "auth@init");
+RT.get("/index.php", "auth/auth@init");
 app.use(express.static('public'));
 
 module.exports = {

@@ -1,8 +1,7 @@
 let _ = require("lodash");
-let {User} = require("./../../models/user");
-let {Reset} = require("./../../models/forgotPass");
+let {User} = MODEL("user");
+let {Reset} = MODEL("forgotPass");
 let bcrypt = require("bcryptjs");
-let MAIL = require("./../../server/email");
 let jwt = require("jsonwebtoken");
 
 class Auth {
@@ -29,32 +28,46 @@ class Auth {
         let {email, password} = req.body;
         User.findByCredentials(email, password).then(user => {
              if(user) {
-                  return user.generateAuthToken().then(token => {
-                       req.session.token = token;
-                       req.flash("ter", "Your are loged In");
-                       res.redirect("/profile");
-                  });
+                  return user.generateAuthToken();
              } else {
-                  req.flash("warn", "Provided Creadentials not valid !!");
-                  return res.redirect("/login");
+                  return Promise.reject();
              }
-
+        }).then(token => {
+             req.session.token = token;
+             req.flash("ter", "Your are loged In");
+             return res.redirect("/profile");
         }).catch(e => {
              req.flash("danger", "Error auth.login");
-             res.redirect("/login");
+             return res.redirect("/login");
         });
     }
 
     logout(req, res) {
-        req.session.regenerate(err => {
-             if(err) {
-                  req.flash("danger", "Error auth.out");
-                  res.redirect("/");
-             } else {
-                  req.flash("dark", "Logout successFully");
-                  return res.redirect("/ohk");
-             }
+        User.findOne({
+             verified: true,
+             'tokens.token': req.session.token,
+             'tokens.access': 'auth'
+        }).then(users => {
+           let tokens = [];
+           users.tokens.forEach(token => {
+                if(req.session.token !== token.token) {
+                     tokens.push(token);
+                }
+           });
+           users.tokens = tokens;
+           users.save().then(() => {
+                req.session.regenerate(err => {
+                     if(err) {
+                          req.flash("danger", "Error auth.out");
+                          return res.redirect("/");
+                     } else {
+                          req.flash("dark", "Logout successFully");
+                          return res.redirect("/ohk");
+                     }
+                });
+           });
         });
+
     }
 
     showSignup(_,res) {
@@ -63,30 +76,30 @@ class Auth {
 
     signup(req,res) {
       let body = _.pick(req.body, ["name","email","password"]);
-      let user = new User(body);
-      let token = jwt.sign({tok: user._id}, process.env.VERIFICATION_SECRET).toString();
-      let ops = {
-           from: `"Admin" <${process.env.EMAIL_MAIL}>`,
-           to: user.email,
-           subject: "Account Verification ✔",
-      };
-      MAIL.view(ops, "verifySignup", {
-           verificationLink: process.env.MAIN_HOST + "/verify/" + token
-      }, (d) => {
-           if (!d) {
-               req.flash("warn", "Error during account creation");
-               return res.redirect("/ohk");
+      User.findOne({
+           verified: false,
+           email: body.email
+      }).then(isUser => {
+           if(isUser) {
+                MAIL("auth").signup(isUser);
+                req.flash("sec", "Account Created successFully <br> Check email to verify");
+                return res.redirect("/ohk");
            } else {
+                let user = new User(body);
+                let token = jwt.sign({tok: user._id}, process.env.VERIFICATION_SECRET).toString();
                 user.save().then(() => {
+                     MAIL("auth").signup(user);
                      req.flash("sec", "Account Created successFully <br> Check email to verify");
                      return res.redirect("/ohk");
                 }).catch(e => {
+                     console.log(e);
                      req.flash("warn", "Account already exists");
                      return res.redirect("/ohk");
                 });
-         }
+           }
+      }).catch(e => {
+           console.log(e);
       });
-
     }
 
     verify(req, res) {
@@ -129,31 +142,15 @@ class Auth {
              email: req.body.email
         }).then(user => {
              if(!user) return Promise.reject();
-
              let resetPassword = new Reset({user_id: user._id});
-             let token = jwt.sign({tok: user._id}, process.env.VERIFICATION_SECRET).toString();
-             let ops = {
-                  from: `"Admin" <${process.env.EMAIL_MAIL}>`,
-                  to: user.email,
-                  subject: "Password Reset ✔",
-                  html: `<link href="http://localhost:1337/main.css" rel="stylesheet"><a class="text-prime" href="${process.env.MAIN_HOST + "/reset/" + token}">Reset</>`
-             };
-
-             MAIL.send(ops, (d) => {
-                  if(!d) {
-                      req.flash("warn", "Error: sanding reset mail")
-                      return res.redirect("/ohk");
-                 } else {
-                      resetPassword.save().then(() => {
-                           req.flash("ter", `Reset Mail sent <${req.body.email}>`);
-                           return res.redirect("/ohk");
-                      }).catch(e => {
-                           req.flash("warn", "Error: during reset");
-                           return res.redirect("/ohk");
-                      })
-                 }
+             resetPassword.save().then(() => {
+                 MAIL("auth").forgotPassword(user);
+                 req.flash("ter", `Reset Mail sent <${req.body.email}>`);
+                 return res.redirect("/ohk");
+             }).catch(e => {
+                  req.flash("warn", "Error: during reset");
+                  return res.redirect("/ohk");
              });
-
         }).catch(e => {
              req.flash("warn", "No Account Associated With This Email Address")
              return res.redirect("/ohk");

@@ -1,4 +1,4 @@
-let {User} = require("./../models/user");
+let {User} = MODEL("user");
 let fs = require("fs");
 
 class Methods {
